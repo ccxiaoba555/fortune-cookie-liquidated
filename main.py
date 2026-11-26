@@ -16,10 +16,15 @@ Python 3.13, standard library only, no network.
 import os
 from pathlib import Path
 
-LINE = (
-    "A great fortune awaits you tomorrow; today, the exchange has "
-    "graciously taken yours for safekeeping."
+# The line is built from its two named parts: the cookie's prophecy
+# and the twist that lands it on the liquidation. Keeping them separate
+# makes the joke's structure explicit and each half easy to retune.
+PROPHECY = "A great fortune awaits you tomorrow;"
+TWIST = (
+    "today, the exchange has graciously taken yours for safekeeping "
+    "— leverage and all."
 )
+LINE = f"{PROPHECY} {TWIST}"
 
 MAX_CHARS = 160
 MAX_WORDS = 20
@@ -41,7 +46,7 @@ def main() -> None:
     # Read back and verify what actually landed on disk, byte for byte.
     written = out_path.read_text(encoding="utf-8")
     assert written == text, "read-back mismatch: entry.txt differs from LINE"
-    assert len(written) == len(text) == 100, "read-back length mismatch"
+    assert len(written) == len(text), "read-back length mismatch"
     print(f"wrote {len(text)} chars ({len(words)} words) to {out_path} (read-back verified)")
 
 
